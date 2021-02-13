@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
 
 
 
+
 app.listen(port, () => {
     console.log("A szerver fut a(z): " + port + " porton");
 });
