@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require("ejs");
+const mysql = require('mysql');
+
 
 const app = express();
 
@@ -13,6 +15,16 @@ app.use(express.static("public"));
 
 const port = process.env.PORT || 3000;
 
+const con = mysql.createConnection({
+    host: "eu-cdbr-west-03.cleardb.net",
+    user: "ba2c246aa2f71f",
+    password: "a3ace454"
+});
+
+con.connect(err => {
+    if (err) throw err;
+    console.log("Connected to database!");
+});
 
 app.get('/', (req, res) => {
     res.render("index")
@@ -20,8 +32,6 @@ app.get('/', (req, res) => {
 
 
 
-
-
 app.listen(port, () => {
-    console.log("A szerver fut a(z): " + port + " porton");
+    console.log("The server is running on the port " + port);
 });
