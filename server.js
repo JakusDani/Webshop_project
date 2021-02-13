@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require("ejs");
-const mysql = require('mysql');
+var mysql = require('mysql');
 
 
 const app = express();
@@ -15,16 +15,29 @@ app.use(express.static("public"));
 
 const port = process.env.PORT || 3000;
 
-const con = mysql.createConnection({
+var con = mysql.createConnection({
+    connectLimit: 100,
     host: "eu-cdbr-west-03.cleardb.net",
+    port: 3306,
     user: "ba2c246aa2f71f",
-    password: "a3ace454"
+    password: "a3ace454",
+    database: "heroku_5c093801d94f4f0",
+    connectionTimeout: 15000,
 });
 
-con.connect(err => {
+con.connect(function(err) {
     if (err) throw err;
-    console.log("Connected to database!");
+    console.log("Connected!");
+    con.query("SELECT * FROM users", function (err, result) {
+        if (err) throw err;
+        console.log("Query completed!");
+    });
 });
+
+// con.connect((err) => {
+//     if (err) throw err;
+//     console.log("Connected to database!");
+// });
 
 app.get('/', (req, res) => {
     res.render("index")
